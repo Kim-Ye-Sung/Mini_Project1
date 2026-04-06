@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
+#include <vector>
 
 class UserInput
 {
@@ -8,6 +9,9 @@ private:
 	std::unique_ptr<class HealthUI> HealthUI_Obj;	// 전방선언을 함.
 	std::unique_ptr<class TimeCalculator> TimeCalculator_Obj;
 	std::unique_ptr<class SpeedCalculator> SpeedCalculator_Obj;
+	std::unique_ptr<class DistanceCalculator> DistanceCalculator_Obj;
+
+	std::vector<class Calculator*> Calculators;
 
 public:
 

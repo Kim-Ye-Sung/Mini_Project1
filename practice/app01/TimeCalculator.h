@@ -1,26 +1,16 @@
-#pragma once
+﻿#pragma once
 
-#include <vector>
-#include <functional>
-#include <string>
+#include "Calculator.h"
 
 
-class TimeCalculator
+class TimeCalculator : public Calculator
 {
 private :
-	bool IsStart = false;
-
 	int RunTime = 0;
 
-	std::vector<std::function<void(std::string)>> listeners;
+	std::string ChangeToText() override;
 
-	std::string TimeCal();
+	void RunningStart() override;
 
-	void Invoke();
-public:
 	void IncreaseRunTime();
-
-	inline void const SetIsStart() { IsStart = !IsStart; }
-
-	void AddFunction(std::function<void(std::string)> func);
 };

@@ -1,27 +1,27 @@
-#pragma once
+﻿#pragma once
 
-#include <vector>
-#include <functional>
+#include "Calculator.h"
 
-class SpeedCalculator
+class SpeedCalculator : public Calculator
 {
 private:
-	float Speed = 4.0f;	 // 런닝머신의 속도 변수. 런닝머신이 시작하면 기본적으로 4km/h 속도로 시작
+	double Speed = 0.0f;	 // 런닝머신의 속도 변수
 
-	std::vector<std::function<void(std::string)>> listeners;
+	std::string ChangeToText() override;
 
-	void Invoke();
+	void RunningStart() override;
 
-	std::string StringText();
-	
+	std::vector<std::function<void(double)>> Speedlisteners;
+
+	void Invoke() override;
+ 
 public:
-	inline void Speed_Up() { this->Speed += 0.1f; }
+	void Speed_Up();
 
-	inline void Speed_Down() { this->Speed -= 0.1f; }
+	void Speed_Down();
 
-	inline void SetSpeed(float Speed) { this->Speed = Speed; }
+	void SetSpeed(double Speed);
 
-
-
-	void AddFunction(std::function<void(std::string)> func);
+	using Calculator::AddFunction;  // 자식클래스에서의 오버로딩 함수로 인해 가려짐현상을 방지하기 위해 선언.
+	void AddFunction(std::function<void(double)> func);  // 오버로딩으로 동일한 이름의 함수를 사용함으로서 다르게 델리게이트 바인딩함.
 };
