@@ -132,11 +132,15 @@
     </ClCompile>
     <ClCompile Include="HealthUI.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SpeedCalculator.cpp" />
     <ClCompile Include="TimeCalculator.cpp" />
+    <ClCompile Include="UserInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HealthUI.h" />
+    <ClInclude Include="SpeedCalculator.h" />
     <ClInclude Include="TimeCalculator.h" />
+    <ClInclude Include="UserInput.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

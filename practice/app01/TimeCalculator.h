@@ -1,18 +1,26 @@
 #pragma once
 
-#include <iostream>
-#include <thread>
-#include <chrono>
+#include <vector>
+#include <functional>
+#include <string>
 
-using namespace std;
 
 class TimeCalculator
 {
 private :
+	bool IsStart = false;
+
 	int RunTime = 0;
 
-public:
-	void InCreaseRunTime();
+	std::vector<std::function<void(std::string)>> listeners;
 
-	string TimeCal();
+	std::string TimeCal();
+
+	void Invoke();
+public:
+	void IncreaseRunTime();
+
+	inline void const SetIsStart() { IsStart = !IsStart; }
+
+	void AddFunction(std::function<void(std::string)> func);
 };
