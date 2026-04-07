@@ -9,8 +9,8 @@ string SpeedCalculator::ChangeToText()
 {
 	stringstream SpeedText;
 	SpeedText << fixed		// 고정 소수점
-			  << setprecision(1)   // 소수점 2자리까지 표기
-			  << setw(4)   // . 까지 포함하여 6자리 나타내기
+			  << setprecision(1)   // 소수점 1자리까지 표기
+			  << setw(4)   // . 까지 포함하여 4자리 나타내기
 			  << setfill('0')  // 비어있는 곳은 0으로 표기
 			  << Speed << " km/h";
 

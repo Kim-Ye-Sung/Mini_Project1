@@ -32,5 +32,7 @@ void UserInput::RunningStart()
 	{
 		Cal->RunningStart(); 
 	}
+
+	HealthUI_Obj->RunningStart();
 }
 
