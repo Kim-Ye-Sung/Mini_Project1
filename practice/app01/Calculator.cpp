@@ -15,10 +15,6 @@ void Calculator::StartRunning()
 	IsStart = true;
 }
 
-void Calculator::StopRunning()
-{
-	IsStart = false;
-}
 
 void Calculator::AddFunction(std::function<void(std::string)> func)
 {

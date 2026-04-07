@@ -4,6 +4,13 @@
 
 // 콘솔에 나타내는 화면을 담당하는 UI클래스
 
+enum UI_State
+{
+	MainUI,
+	RunningUI,
+	ResultUI,
+};
+
 class HealthUI
 {
 private:
@@ -19,12 +26,17 @@ private:
 
 	void HideCursor();
 
-	void ShowUI();
+	void ShowMaiuMenuUI();
+
+	void ShowRunningUI();
+
+	void ShowResultUI();
 
 	bool IsStart = false;
 
 	void UpdateScreen();
 
+	UI_State CurrentUI_State = UI_State::MainUI;
 
 public:
 	HealthUI();
@@ -40,5 +52,9 @@ public:
 	void StartRunning();
 
 	void StopRunning();
+
+	void GoToMainmenu();
+
+	inline UI_State GetCurrentU_State() const { return CurrentUI_State; }
 
 };

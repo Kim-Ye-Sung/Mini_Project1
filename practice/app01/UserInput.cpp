@@ -16,38 +16,42 @@ void UserInput::InputLoop()
 	{
 		int key = _getch();
 
-		cout << "Now Key : " << key << endl;
+		//cout << "Now Key : " << key << endl;
 		
 		switch (key)
 		{
-		case 32:
-			StartRunning();
+		case 32:	// 스페이스바를 눌렀을때
+			switch (HealthUI_Obj->GetCurrentU_State())
+			{
+			case UI_State::MainUI:	// 현재 화면이 메인메뉴라면 런닝머신 가동
+				StartRunning();
+				break;
+			case UI_State::RunningUI:	// 현재 화면이 런닝머신 작동중이라면 런닝머신 종료
+				StopRunning();
+				break;
+			case UI_State::ResultUI:	// 현재 화면이 결과창이라면 데이터베이스에 저장하고 메인메뉴로 돌아가기
+				HealthUI_Obj->GoToMainmenu();
+				break;
+			}
 			break;
-		case 27:
-			StopRunning();
+		case 27:	// Esc를 눌렀을때
+			switch (HealthUI_Obj->GetCurrentU_State())
+			{
+			case UI_State::MainUI:	// 현재 화면이 메인메뉴라면 프로그램 종료
+				break;
+			case UI_State::ResultUI:	// 현재 화면이 결과창이라면 메인메뉴로 바로 이동
+				HealthUI_Obj->GoToMainmenu();
+				break;
+			}
 			break;
-		case 72 :
+		case 72 :	// 윗방향키를 눌렀을때
 			SpeedCalculator_Obj->Speed_Up();
 			break;
-		case 80:
+		case 80:	// 아랫방향키를 눌렀을때
 			SpeedCalculator_Obj->Speed_Down();
 			break;
 
 		}
-		//if (key == 0 || key == 224)
-		//{
-		//	int arrow = _getch();
-
-		//	if (arrow == 72) // 윗방향키
-		//	{
-		//		//SpeedCalculator_Obj->Speed_Up();
-		//		RunningStart();
-		//	}
-		//	else if (arrow == 80) // 아랫방향키
-		//	{
-		//		SpeedCalculator_Obj->Speed_Down();
-		//	}
-		//}
 	}
 }
 

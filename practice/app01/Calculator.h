@@ -21,7 +21,7 @@ protected:
 public:
 	virtual void StartRunning();
 
-	void StopRunning();
+	inline void StopRunning() { IsStart = false; }
 
 	void AddFunction(std::function<void(std::string)> func);
 };

@@ -14,7 +14,6 @@ private:
 	std::vector<std::function<void(double)>> Speedlisteners;
 
 	void Invoke() override;
-
 public:
 	void Speed_Up();
 

@@ -13,4 +13,7 @@ private :
 	void StartRunning() override;
 
 	void IncreaseRunTime();
+
+public:
+	inline int GetRunTime() const { return RunTime; }
 };

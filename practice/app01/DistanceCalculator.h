@@ -20,4 +20,6 @@ public:
 
 	inline void SetCurrentSpeed(double Speed) { CurrentSpeed = Speed; }
 
+	inline double GetDistance() const { return Distance; }
+
 };

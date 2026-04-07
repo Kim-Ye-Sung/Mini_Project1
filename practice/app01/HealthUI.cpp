@@ -26,7 +26,7 @@ HealthUI::HealthUI()
 {
     HideCursor();       // 시작시 커서를 숨기기.
 
-    ShowUI();           // 시작시 최초 UI 띄우기.
+    ShowMaiuMenuUI();   // 시작시 최초 UI 띄우기.
 }
 
 void HealthUI::StopRunning()
@@ -43,10 +43,19 @@ void HealthUI::StopRunning()
     DistanceText = "  0.000 km";	
     CalorieText = "   0.0 kcal"; 
 
-    ShowUI();
+    CurrentUI_State = UI_State::ResultUI;
+
+    ShowResultUI();
 }
 
-void HealthUI::ShowUI()
+void HealthUI::GoToMainmenu()
+{
+    CurrentUI_State = UI_State::MainUI;
+
+    ShowMaiuMenuUI();
+}
+
+void HealthUI::ShowRunningUI()
 {
 	MoveCursorToTop();
 
@@ -54,8 +63,61 @@ void HealthUI::ShowUI()
 	cout << "│   Time   │   Speed   │   Distance   │   Calorie   │" << endl;
 	cout << "│ " << RunTimeText << " │ " << SpeedText << " │  " << DistanceText << "  │ " << CalorieText << " │" << endl;
 	cout << "├──────────┴───────────┴──────────────┴─────────────┤" << endl;
-	cout << "│                                                   │" << endl;
-	cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                    Stop     : Space               │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                  Speed Up   : ↑                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                  Speed Down : ↓                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "└───────────────────────────────────────────────────┘" << endl;
+}
+
+void HealthUI::ShowMaiuMenuUI()
+{
+    MoveCursorToTop();
+
+    cout << "┌──────────┬───────────┬──────────────┬─────────────┐" << endl;
+    cout << "│   Time   │   Speed   │   Distance   │   Calorie   │" << endl;
+    cout << "│ " << RunTimeText << " │ " << SpeedText << " │  " << DistanceText << "  │ " << CalorieText << " │" << endl;
+    cout << "├──────────┴───────────┴──────────────┴─────────────┤" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                  Start : Space                    │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                   Exit :  ESC                     │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "└───────────────────────────────────────────────────┘" << endl;
+}
+
+void HealthUI::ShowResultUI()
+{
+    MoveCursorToTop();
+
+    cout << "┌──────────┬───────────┬──────────────┬─────────────┐" << endl;
+    cout << "│   Time   │   Speed   │   Distance   │   Calorie   │" << endl;
+    cout << "│ " << RunTimeText << " │ " << SpeedText << " │  " << DistanceText << "  │ " << CalorieText << " │" << endl;
+    cout << "├──────────┴───────────┴──────────────┴─────────────┤" << endl;
+    cout << "│                      Result                       │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│              Time      :                          │" << endl;
+    cout << "│          Average Speed :                          │" << endl;
+    cout << "│            Distance    :                          │" << endl;
+    cout << "│            Calorie     :                          │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│               Do you want to save?                │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│           Yes : Space       No : Esc              │" << endl;
+    cout << "│                                                   │" << endl;
     cout << "└───────────────────────────────────────────────────┘" << endl;
 }
 
@@ -70,7 +132,7 @@ void HealthUI::UpdateScreen()
             return;
         }
 
-        ShowUI();
+        ShowRunningUI();
     }
 }
 
@@ -83,6 +145,10 @@ void HealthUI::StartRunning()
     }
 
     IsStart = true;
+
+    ShowRunningUI();
+
+    CurrentUI_State = UI_State::RunningUI;
 
     thread t(&HealthUI::UpdateScreen, this);
     t.detach();
