@@ -30,7 +30,7 @@ private:
 
 	void ShowRunningUI();
 
-	void ShowResultUI();
+	void ShowResultUI(std::string T_Text, std::string S_Text, std::string D_Text, std::string C_Text);
 
 	bool IsStart = false;
 
@@ -51,7 +51,7 @@ public:
 
 	void StartRunning();
 
-	void StopRunning();
+	void StopRunning(std::string AverageSpeedText);
 
 	void GoToMainmenu();
 

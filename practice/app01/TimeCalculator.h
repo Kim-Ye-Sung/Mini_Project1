@@ -6,8 +6,12 @@
 class TimeCalculator : public Calculator
 {
 private :
-	int RunTime = 0;
+	double RunTime = 0.0f;
 
+	double PrevRunTime = 0.0f;   // 1초가 지났는지 체크하기 위한 변수
+
+	const int UpdateCycle = 200;
+	
 	std::string ChangeToText() override;
 
 	void StartRunning() override;
@@ -15,5 +19,5 @@ private :
 	void IncreaseRunTime();
 
 public:
-	inline int GetRunTime() const { return RunTime; }
+	inline double GetRunTime() const { return RunTime; }
 };

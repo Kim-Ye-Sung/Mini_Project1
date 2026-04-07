@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿ #pragma once
 
 #include "Calculator.h"
 
@@ -15,7 +15,7 @@ private:
 
 	void IncreaseCalorie();
 
-	int UpdateCycle = 200;  // 칼로리 계산시 갱신 주기. 200 = 0.2초
+	const int UpdateCycle = 200;  // 칼로리 계산시 갱신 주기. 200 = 0.2초
 
 	double KcalCalculate();
 

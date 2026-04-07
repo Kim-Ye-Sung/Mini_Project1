@@ -9,7 +9,7 @@ private:
 
 	double CurrentSpeed = 0.0f;
 
-	int UpdateCycle = 200;		// 거리계산시 갱신 주기. 200 = 0.2초
+	const int UpdateCycle = 200;		// 거리계산시 갱신 주기. 200 = 0.2초
 
 	std::string ChangeToText() override;
 

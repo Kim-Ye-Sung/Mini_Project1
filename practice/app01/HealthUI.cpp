@@ -29,7 +29,7 @@ HealthUI::HealthUI()
     ShowMaiuMenuUI();   // 시작시 최초 UI 띄우기.
 }
 
-void HealthUI::StopRunning()
+void HealthUI::StopRunning(std::string AverageSpeedText)
 {
     if (!IsStart)
     {
@@ -38,6 +38,10 @@ void HealthUI::StopRunning()
 
     IsStart = false;
 
+    string TimeResultText = RunTimeText;
+    string DistanceResltText = DistanceText;
+    string CalorieResultText = CalorieText;
+
     RunTimeText = "00:00:00";	
     SpeedText = " 0.0 km/h";	
     DistanceText = "  0.000 km";	
@@ -45,7 +49,7 @@ void HealthUI::StopRunning()
 
     CurrentUI_State = UI_State::ResultUI;
 
-    ShowResultUI();
+    ShowResultUI(TimeResultText, AverageSpeedText, DistanceResltText, CalorieResultText);
 }
 
 void HealthUI::GoToMainmenu()
@@ -99,7 +103,7 @@ void HealthUI::ShowMaiuMenuUI()
     cout << "└───────────────────────────────────────────────────┘" << endl;
 }
 
-void HealthUI::ShowResultUI()
+void HealthUI::ShowResultUI(std::string T_Text, std::string S_Text, std::string D_Text, std::string C_Text)
 {
     MoveCursorToTop();
 
@@ -109,10 +113,10 @@ void HealthUI::ShowResultUI()
     cout << "├──────────┴───────────┴──────────────┴─────────────┤" << endl;
     cout << "│                      Result                       │" << endl;
     cout << "│                                                   │" << endl;
-    cout << "│              Time      :                          │" << endl;
-    cout << "│          Average Speed :                          │" << endl;
-    cout << "│            Distance    :                          │" << endl;
-    cout << "│            Calorie     :                          │" << endl;
+    cout << "│              Time      :   " << T_Text << "               │" << endl;
+    cout << "│          Average Speed :       "  << S_Text << "          │" << endl;
+    cout << "│            Distance    :    "   << D_Text << "            │" << endl;
+    cout << "│            Calorie     :     "  << C_Text << "          │" << endl;
     cout << "│                                                   │" << endl;
     cout << "│               Do you want to save?                │" << endl;
     cout << "│                                                   │" << endl;

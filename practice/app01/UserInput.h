@@ -6,6 +6,9 @@
 class UserInput
 {
 private:
+
+	bool WantExit = false;	// 프로그램을 종료할지 결정하는 변수. true = 종료
+
 	std::unique_ptr<class HealthUI> HealthUI_Obj;	// 전방선언을 함.
 	std::unique_ptr<class TimeCalculator> TimeCalculator_Obj;
 	std::unique_ptr<class SpeedCalculator> SpeedCalculator_Obj;
@@ -24,4 +27,6 @@ public:
 
 	UserInput();
 	~UserInput(); // 전방 선언된 타입을 unique_ptr로 관리하므로 cpp에서 소멸자 정의 필요
+
+	inline bool GetWantExit() const { return WantExit; }
 };
