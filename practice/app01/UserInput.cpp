@@ -16,8 +16,8 @@ void UserInput::InputLoop()
 	{
 		int key = _getch();
 
-		cout << "Now Key : " << key << endl;
-		
+		//cout << "Now Key : " << key << endl;
+
 		switch (key)
 		{
 		case 32:
@@ -26,41 +26,31 @@ void UserInput::InputLoop()
 		case 27:
 			StopRunning();
 			break;
-		case 72 :
+		case 72:
 			SpeedCalculator_Obj->Speed_Up();
 			break;
 		case 80:
 			SpeedCalculator_Obj->Speed_Down();
 			break;
-
 		}
-		//if (key == 0 || key == 224)
-		//{
-		//	int arrow = _getch();
-
-		//	if (arrow == 72) // 윗방향키
-		//	{
-		//		//SpeedCalculator_Obj->Speed_Up();
-		//		RunningStart();
-		//	}
-		//	else if (arrow == 80) // 아랫방향키
-		//	{
-		//		SpeedCalculator_Obj->Speed_Down();
-		//	}
-		//}
 	}
 }
 
 UserInput::UserInput()
 {
+	lock_guard<mutex> lock(InputMutex);   // [추가]
+
 	HealthUI_Obj = make_unique<HealthUI>();
 
-	TimeCalculator_Obj = make_unique<TimeCalculator>();	
+	TimeCalculator_Obj = make_unique<TimeCalculator>();
 	Calculators.push_back(TimeCalculator_Obj.get());
+
 	SpeedCalculator_Obj = make_unique<SpeedCalculator>();
 	Calculators.push_back(SpeedCalculator_Obj.get());
+
 	DistanceCalculator_Obj = make_unique<DistanceCalculator>();
 	Calculators.push_back(DistanceCalculator_Obj.get());
+
 	CalorieCalculator_Obj = make_unique<CalorieCalculator>();
 	Calculators.push_back(CalorieCalculator_Obj.get());
 
@@ -77,18 +67,22 @@ UserInput::UserInput()
 
 UserInput::~UserInput() = default;
 
-void UserInput::StartRunning()	// 런닝머신 작동을 시작하는 함수
+void UserInput::StartRunning()
 {
-	for (auto Cal : Calculators)	// 시간, 속도, 거리, 칼로리 계산기들의 계산을 시작
+	lock_guard<mutex> lock(InputMutex);   // [추가]
+
+	for (auto Cal : Calculators)
 	{
 		Cal->StartRunning();
 	}
 
-	HealthUI_Obj->StartRunning();	// 스크린 갱신 시작
+	HealthUI_Obj->StartRunning();
 }
 
 void UserInput::StopRunning()
 {
+	lock_guard<mutex> lock(InputMutex);   // [추가]
+
 	for (auto Cal : Calculators)
 	{
 		Cal->StopRunning();
@@ -96,4 +90,3 @@ void UserInput::StopRunning()
 
 	HealthUI_Obj->StopRunning();
 }
-

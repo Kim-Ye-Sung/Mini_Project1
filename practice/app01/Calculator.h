@@ -3,20 +3,23 @@
 #include <vector>
 #include <functional>
 #include <string>
+#include <mutex>   // [추가]
 
 class Calculator
 {
 private:
-	bool IsStart = false;		// 런닝머신의 작동을 시작을 나타내는 변수. true = 작동, false = 정지. 처음은 정지상태로 시작
+	bool IsStart = false;
 
 	std::vector<std::function<void(std::string)>> listeners;
 
 protected:
+	mutable std::mutex CalculatorMutex;   // [추가]
+
 	virtual void Invoke();
 
 	virtual std::string ChangeToText() = 0;
 
-	inline bool GetIsStart()  const { return IsStart; }
+	bool GetIsStart() const;   // [수정] inline 제거
 
 public:
 	virtual void StartRunning();

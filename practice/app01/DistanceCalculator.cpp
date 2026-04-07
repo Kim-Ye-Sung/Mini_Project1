@@ -8,13 +8,20 @@ using namespace std;
 
 string DistanceCalculator::ChangeToText()
 {
+	double localDistance;   // [추가]
+
+	{
+		lock_guard<mutex> lock(DistanceMutex);   // [추가]
+		localDistance = Distance;
+	}
+
 	std::stringstream DistanceText;
 
-	DistanceText << fixed           // 고정 소수점
-				 << setprecision(3) // 소수점 2자리
-				 << setw(7)         // 전체 폭 (000.00  == .을 포함한6자리)
-				 << setfill(' ')    // 빈 자리 0으로 채움
-				 << Distance << " km";
+	DistanceText << fixed
+		<< setprecision(3)
+		<< setw(7)
+		<< setfill(' ')
+		<< localDistance << " km";
 
 	return DistanceText.str();
 }
@@ -28,7 +35,10 @@ void DistanceCalculator::StartRunning()
 
 	Calculator::StartRunning();
 
-	Distance = 0.0f;
+	{
+		lock_guard<mutex> lock(DistanceMutex);   // [추가]
+		Distance = 0.0f;
+	}
 
 	thread t(&DistanceCalculator::IncreaseDistance, this);
 	t.detach();
@@ -38,15 +48,24 @@ void DistanceCalculator::IncreaseDistance()
 {
 	while (true)
 	{
-		this_thread::sleep_for(chrono::milliseconds(UpdateCycle));	// 거리계산 갱신을 주기적으로 실행
+		this_thread::sleep_for(chrono::milliseconds(UpdateCycle));
 
-		if (!GetIsStart())	// 주기가 지나기 전에 런닝머신이 종료되면 거리갱신 하지않음
+		if (!GetIsStart())
 		{
 			return;
 		}
 
-		Distance += CurrentSpeed * (((double)UpdateCycle/1000) / 3600);   // 속도에 따라 거리갱신
-		Invoke();		// 거리갱신 됐다고 알림
+		{
+			lock_guard<mutex> lock(DistanceMutex);   // [추가]
+			Distance += CurrentSpeed * (((double)UpdateCycle / 1000) / 3600);
+		}
+
+		Invoke();
 	}
 }
 
+void DistanceCalculator::SetCurrentSpeed(double Speed)
+{
+	lock_guard<mutex> lock(DistanceMutex);   // [추가]
+	CurrentSpeed = Speed;
+}

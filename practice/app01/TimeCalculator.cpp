@@ -10,16 +10,20 @@ using namespace std;
 void TimeCalculator::IncreaseRunTime()
 {
 	while (true)
-	{	
-		this_thread::sleep_for(chrono::seconds(1));	// 1초 정지
+	{
+		this_thread::sleep_for(chrono::seconds(1));
 
-		if (!GetIsStart())	// 1초가 되기전에 런닝머신의 작동이 중단되면 시간계산 끝냄
+		if (!GetIsStart())
 		{
 			return;
 		}
 
-		RunTime += 1;	// 1초를 더함
-		Invoke();		// 바뀐 시간을 알림
+		{
+			lock_guard<mutex> lock(TimeMutex);   // [추가]
+			RunTime += 1;
+		}
+
+		Invoke();
 	}
 }
 
@@ -32,7 +36,10 @@ void TimeCalculator::StartRunning()
 
 	Calculator::StartRunning();
 
-	RunTime = 0;
+	{
+		lock_guard<mutex> lock(TimeMutex);   // [추가]
+		RunTime = 0;
+	}
 
 	thread t(&TimeCalculator::IncreaseRunTime, this);
 	t.detach();
@@ -40,20 +47,21 @@ void TimeCalculator::StartRunning()
 
 string TimeCalculator::ChangeToText()
 {
-	int hour = RunTime / 3600;          // 시간
-	int min = (RunTime % 3600) / 60;    // 분
-	int sec = RunTime % 60;             // 초
+	int localRunTime;   // [추가]
+
+	{
+		lock_guard<mutex> lock(TimeMutex);   // [추가]
+		localRunTime = RunTime;
+	}
+
+	int hour = localRunTime / 3600;
+	int min = (localRunTime % 3600) / 60;
+	int sec = localRunTime % 60;
 
 	stringstream TimeText;
-	TimeText << setw(2) << setfill('0') << hour << ":"  // 시간,분,초 단위를 두자리씩 표기하며, 빈자리는 0으로 채워서 나타내기
-			 << setw(2) << setfill('0') << min << ":"
-			 << setw(2) << setfill('0') << sec;
+	TimeText << setw(2) << setfill('0') << hour << ":"
+		<< setw(2) << setfill('0') << min << ":"
+		<< setw(2) << setfill('0') << sec;
 
 	return TimeText.str();
 }
-
-
-
-
-
-

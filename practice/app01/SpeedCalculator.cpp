@@ -7,12 +7,19 @@ using namespace std;
 
 string SpeedCalculator::ChangeToText()
 {
+	double localSpeed;   // [추가]
+
+	{
+		lock_guard<mutex> lock(SpeedMutex);   // [추가]
+		localSpeed = Speed;
+	}
+
 	stringstream SpeedText;
-	SpeedText << fixed		// 고정 소수점
-			  << setprecision(1)   // 소수점 1자리까지 표기
-			  << setw(4)   // . 까지 포함하여 4자리 나타내기
-			  << setfill(' ')  // 비어있는 곳은 0으로 표기
-			  << Speed << " km/h";
+	SpeedText << fixed
+		<< setprecision(1)
+		<< setw(4)
+		<< setfill(' ')
+		<< localSpeed << " km/h";
 
 	return SpeedText.str();
 }
@@ -26,17 +33,30 @@ void SpeedCalculator::StartRunning()
 
 	Calculator::StartRunning();
 
-	Speed = 4.0f;       // 런닝머신을 작동시작시에는 기본적으로 4km/h의 속도로 시작
+	{
+		lock_guard<mutex> lock(SpeedMutex);   // [추가]
+		Speed = 4.0f;
+	}
+
 	Invoke();
 }
 
 void SpeedCalculator::Invoke()
 {
+	double localSpeed;   // [추가]
+	vector<function<void(double)>> copiedListeners;   // [추가]
+
 	Calculator::Invoke();
 
-	for (auto& func : Speedlisteners)
 	{
-		func(Speed);
+		lock_guard<mutex> lock(SpeedMutex);   // [추가]
+		localSpeed = Speed;
+		copiedListeners = Speedlisteners;
+	}
+
+	for (auto& func : copiedListeners)
+	{
+		func(localSpeed);
 	}
 }
 
@@ -47,7 +67,11 @@ void SpeedCalculator::Speed_Up()
 		return;
 	}
 
-	Speed += 0.1f;
+	{
+		lock_guard<mutex> lock(SpeedMutex);   // [추가]
+		Speed += 0.1f;
+	}
+
 	Invoke();
 }
 
@@ -58,7 +82,11 @@ void SpeedCalculator::Speed_Down()
 		return;
 	}
 
-	Speed -= 0.1f;
+	{
+		lock_guard<mutex> lock(SpeedMutex);   // [추가]
+		Speed -= 0.1f;
+	}
+
 	Invoke();
 }
 
@@ -69,11 +97,16 @@ void SpeedCalculator::SetSpeed(double Speed)
 		return;
 	}
 
-	this->Speed = Speed;
+	{
+		lock_guard<mutex> lock(SpeedMutex);   // [추가]
+		this->Speed = Speed;
+	}
+
 	Invoke();
 }
 
 void SpeedCalculator::AddFunction(std::function<void(double)> func)
 {
+	lock_guard<mutex> lock(SpeedMutex);   // [추가]
 	Speedlisteners.push_back(func);
 }

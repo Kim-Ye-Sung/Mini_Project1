@@ -1,19 +1,19 @@
 ﻿#pragma once
 
-#include<string>
-
-// 콘솔에 나타내는 화면을 담당하는 UI클래스
+#include <string>
+#include <mutex>   // [추가]
 
 class HealthUI
 {
 private:
-	std::string RunTimeText = "00:00:00";	// 런닝시간을 나타내는 텍스트 변수
+	std::string RunTimeText = "00:00:00";
+	std::string SpeedText = " 0.0 km/h";
+	std::string DistanceText = "  0.000 km";
+	std::string CalorieText = "   0.0 kcal";
 
-	std::string SpeedText = " 0.0 km/h";	// 런닝머신의 현재 속도를 나타내는 텍스트 변수
+	bool IsStart = false;
 
-	std::string DistanceText = "  0.000 km";	// 런닝머신의 달린 거리를 나타내는 텍스트 변수
-
-	std::string CalorieText = "   0.0 kcal"; // 런닝머신으로 달리면서 소비한 칼로리를 나타내는 텍스트 변수
+	std::mutex UIMutex;   // [추가]
 
 	void MoveCursorToTop();
 
@@ -21,24 +21,20 @@ private:
 
 	void ShowUI();
 
-	bool IsStart = false;
-
 	void UpdateScreen();
-
 
 public:
 	HealthUI();
 
-	inline void SetRunTimeText(std::string RunTimeText) { this->RunTimeText = RunTimeText; }
+	void SetRunTimeText(std::string RunTimeText);
 
-	inline void SetSpeedText(std::string SpeedText) { this->SpeedText = SpeedText; }
+	void SetSpeedText(std::string SpeedText);
 
-	inline void SetDistanceText(std::string DistanceText) { this->DistanceText = DistanceText; }
+	void SetDistanceText(std::string DistanceText);
 
-	inline void SetCalorieText(std::string CalorieText) { this->CalorieText = CalorieText; }
+	void SetCalorieText(std::string CalorieText);
 
 	void StartRunning();
 
 	void StopRunning();
-
 };

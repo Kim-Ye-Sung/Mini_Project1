@@ -4,17 +4,23 @@
 #include <sstream>
 #include <iomanip>
 
-
 using namespace std;
 
 std::string CalorieCalculator::ChangeToText()
-{	
+{
+	double localCalorie;
+
+	{
+		lock_guard<mutex> lock(CalorieMutex);
+		localCalorie = Calorie;
+	}
+
 	stringstream CalorieText;
 	CalorieText << fixed
-				<< setprecision(1)
-				<< setw(6)
-				<< setfill(' ')
-				<< Calorie << " kcal";
+		<< setprecision(1)
+		<< setw(6)
+		<< setfill(' ')
+		<< localCalorie << " kcal";
 
 	return CalorieText.str();
 }
@@ -28,7 +34,10 @@ void CalorieCalculator::StartRunning()
 
 	Calculator::StartRunning();
 
-	Calorie = 0.0f;
+	{
+		lock_guard<mutex> lock(CalorieMutex);
+		Calorie = 0.0f;
+	}
 
 	thread t(&CalorieCalculator::IncreaseCalorie, this);
 	t.detach();
@@ -45,30 +54,45 @@ void CalorieCalculator::IncreaseCalorie()
 			return;
 		}
 
-		Calorie += KcalCalculate();
+		double addValue = KcalCalculate();
+
+		{
+			lock_guard<mutex> lock(CalorieMutex);
+			Calorie += addValue;
+		}
+
 		Invoke();
 	}
 }
 
 double CalorieCalculator::KcalCalculate()
 {
-	double o2; // 분당 산소 섭취량 (ml/kg/min)
+	double localSpeed;
 
-	// 속도 구간별 ACSM 공식 적용
-	if (CurrentSpeed <= 5.0f) {			// 5km/h(걷기) 속도 이하에 사용하는 공식
-		o2 = (0.1 * (CurrentSpeed * 1000.0f / 60.0f)) + 3.5f;
-	}
-	else {		// 달리기 속도에 사용하는 공식
-		o2 = (0.2 * (CurrentSpeed * 1000.0f / 60.0f)) + 3.5f;
+	{
+		lock_guard<mutex> lock(CalorieMutex);
+		localSpeed = CurrentSpeed;
 	}
 
-	// 분당 칼로리 소모량 계산 (kcal/min)
-	// 산소 1L당 약 5kcal 소모 원리 적용
-	double kcalPerMin = (o2 * 70.0f * 5.0f) / 1000.0f;	// 여기서 70.0f는 성인 평균체중(kg)으로 잡고 계산한것
+	double o2;
 
-	// 칼로리 계산 주기에 따른 실시간 소모량 변환
-	// (kcalPerMin / 60,000ms) * UpdateCycle(ms)
+	if (localSpeed <= 5.0f)
+	{
+		o2 = (0.1 * (localSpeed * 1000.0f / 60.0f)) + 3.5f;
+	}
+	else
+	{
+		o2 = (0.2 * (localSpeed * 1000.0f / 60.0f)) + 3.5f;
+	}
+
+	double kcalPerMin = (o2 * 70.0f * 5.0f) / 1000.0f;
 	double caloriesInInterval = (kcalPerMin / 60000.0f) * (double)UpdateCycle;
 
 	return caloriesInInterval;
+}
+
+void CalorieCalculator::SetCurrentSpeed(double Speed)
+{
+	lock_guard<mutex> lock(CalorieMutex);
+	CurrentSpeed = Speed;
 }

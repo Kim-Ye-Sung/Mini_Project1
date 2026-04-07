@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Calculator.h"
+#include <mutex>   // [추가]
 
 class DistanceCalculator : public Calculator
 {
@@ -9,15 +10,16 @@ private:
 
 	double CurrentSpeed = 0.0f;
 
-	int UpdateCycle = 200;		// 거리계산시 갱신 주기. 200 = 0.2초
+	int UpdateCycle = 200;
+
+	mutable std::mutex DistanceMutex;   // [추가]
 
 	std::string ChangeToText() override;
 
 	void StartRunning() override;
 
 	void IncreaseDistance();
+
 public:
-
-	inline void SetCurrentSpeed(double Speed) { CurrentSpeed = Speed; }
-
+	void SetCurrentSpeed(double Speed);   // [수정] inline 제거
 };
