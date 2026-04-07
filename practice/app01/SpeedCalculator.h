@@ -9,12 +9,12 @@ private:
 
 	std::string ChangeToText() override;
 
-	void RunningStart() override;
+	void StartRunning() override;
 
 	std::vector<std::function<void(double)>> Speedlisteners;
 
 	void Invoke() override;
- 
+
 public:
 	void Speed_Up();
 

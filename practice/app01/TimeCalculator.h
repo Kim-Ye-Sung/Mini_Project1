@@ -10,7 +10,7 @@ private :
 
 	std::string ChangeToText() override;
 
-	void RunningStart() override;
+	void StartRunning() override;
 
 	void IncreaseRunTime();
 };

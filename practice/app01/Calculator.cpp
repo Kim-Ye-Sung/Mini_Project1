@@ -10,16 +10,14 @@ void Calculator::Invoke()
 	}
 }
 
-string Calculator::ChangeToText()
-{
-	string a = "kkk";
-
-	return a;
-}
-
-void Calculator::RunningStart()
+void Calculator::StartRunning()
 {
 	IsStart = true;
+}
+
+void Calculator::StopRunning()
+{
+	IsStart = false;
 }
 
 void Calculator::AddFunction(std::function<void(std::string)> func)

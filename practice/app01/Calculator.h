@@ -14,12 +14,14 @@ private:
 protected:
 	virtual void Invoke();
 
-	virtual std::string ChangeToText();
+	virtual std::string ChangeToText() = 0;
 
 	inline bool GetIsStart()  const { return IsStart; }
 
 public:
-	virtual void RunningStart();
+	virtual void StartRunning();
+
+	void StopRunning();
 
 	void AddFunction(std::function<void(std::string)> func);
 };

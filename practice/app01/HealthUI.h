@@ -9,9 +9,11 @@ class HealthUI
 private:
 	std::string RunTimeText = "00:00:00";	// 런닝시간을 나타내는 텍스트 변수
 
-	std::string SpeedText = "00.0 km/h";	// 런닝머신의 현재 속도를 나타내는 텍스트 변수
+	std::string SpeedText = " 0.0 km/h";	// 런닝머신의 현재 속도를 나타내는 텍스트 변수
 
-	std::string DistanceText = "000.00 km";	// 런닝머신의 달린 거리를 나타내는 텍스트 변수
+	std::string DistanceText = "  0.000 km";	// 런닝머신의 달린 거리를 나타내는 텍스트 변수
+
+	std::string CalorieText = "   0.0 kcal"; // 런닝머신으로 달리면서 소비한 칼로리를 나타내는 텍스트 변수
 
 	void MoveCursorToTop();
 
@@ -27,11 +29,16 @@ private:
 public:
 	HealthUI();
 
-	void SetRunTimeText(std::string RunTimeText);
+	inline void SetRunTimeText(std::string RunTimeText) { this->RunTimeText = RunTimeText; }
 
-	void SetSpeedText(std::string SpeedText);
+	inline void SetSpeedText(std::string SpeedText) { this->SpeedText = SpeedText; }
 
-	void SetDistanceText(std::string DistanceText);
+	inline void SetDistanceText(std::string DistanceText) { this->DistanceText = DistanceText; }
 
-	void RunningStart();
+	inline void SetCalorieText(std::string CalorieText) { this->CalorieText = CalorieText; }
+
+	void StartRunning();
+
+	void StopRunning();
+
 };

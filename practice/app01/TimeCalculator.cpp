@@ -11,15 +11,11 @@ void TimeCalculator::IncreaseRunTime()
 {
 	while (true)
 	{	
-		// 0.1초 정지를 10번돌면 1초로 계산
-		for (int i = 0; i < 10; i++)
-		{
-			if (!GetIsStart())	// 1초가 되기전에 런닝머신의 작동이 중단되면 시간계산 끝냄
-			{
-				return;
-			}
+		this_thread::sleep_for(chrono::seconds(1));	// 1초 정지
 
-			this_thread::sleep_for(chrono::milliseconds(100));	// 0.1초 정지
+		if (!GetIsStart())	// 1초가 되기전에 런닝머신의 작동이 중단되면 시간계산 끝냄
+		{
+			return;
 		}
 
 		RunTime += 1;	// 1초를 더함
@@ -27,14 +23,16 @@ void TimeCalculator::IncreaseRunTime()
 	}
 }
 
-void TimeCalculator::RunningStart()
+void TimeCalculator::StartRunning()
 {
 	if (GetIsStart())
 	{
 		return;
 	}
 
-	Calculator::RunningStart();
+	Calculator::StartRunning();
+
+	RunTime = 0;
 
 	thread t(&TimeCalculator::IncreaseRunTime, this);
 	t.detach();

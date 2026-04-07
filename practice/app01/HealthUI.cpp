@@ -29,13 +29,30 @@ HealthUI::HealthUI()
     ShowUI();           // 시작시 최초 UI 띄우기.
 }
 
+void HealthUI::StopRunning()
+{
+    if (!IsStart)
+    {
+        return;
+    }
+
+    IsStart = false;
+
+    RunTimeText = "00:00:00";	
+    SpeedText = " 0.0 km/h";	
+    DistanceText = "  0.000 km";	
+    CalorieText = "   0.0 kcal"; 
+
+    ShowUI();
+}
+
 void HealthUI::ShowUI()
 {
 	MoveCursorToTop();
 
 	cout << "┌──────────┬───────────┬──────────────┬─────────────┐" << endl;
 	cout << "│   Time   │   Speed   │   Distance   │   Calorie   │" << endl;
-	cout << "│ " << RunTimeText << " │ " << SpeedText << " │   " << DistanceText << "  │             │" << endl;
+	cout << "│ " << RunTimeText << " │ " << SpeedText << " │  " << DistanceText << "  │ " << CalorieText << " │" << endl;
 	cout << "├──────────┴───────────┴──────────────┴─────────────┤" << endl;
 	cout << "│                                                   │" << endl;
 	cout << "│                                                   │" << endl;
@@ -44,29 +61,21 @@ void HealthUI::ShowUI()
 
 void HealthUI::UpdateScreen()
 {
-    while (IsStart)
+    while (true)
     {
-        this_thread::sleep_for(chrono::milliseconds(100));
+        this_thread::sleep_for(chrono::milliseconds(100));  // 0.1초 단위로 업데이트 실행
+        
+        if (!IsStart)  // 0.1초가 지나기 전에 런닝머신의 작동이 정지되면 화면 업데이트 하지 않음
+        {
+            return;
+        }
+
         ShowUI();
     }
 }
 
-void HealthUI::SetRunTimeText(string RunTimeText)
-{
-    this->RunTimeText = RunTimeText;
-}
 
-void HealthUI::SetSpeedText(std::string SpeedText)
-{
-    this->SpeedText = SpeedText;
-}
-
-void HealthUI::SetDistanceText(std::string DistanceText)
-{
-    this->DistanceText = DistanceText;
-}
-
-void HealthUI::RunningStart()
+void HealthUI::StartRunning()
 {
     if (IsStart)
     {
