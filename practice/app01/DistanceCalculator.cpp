@@ -38,14 +38,14 @@ void DistanceCalculator::IncreaseDistance()
 {
 	while (true)
 	{
-		this_thread::sleep_for(chrono::milliseconds(UpdateCycle));	// 거리계산 갱신을 주기적으로 실행
+		this_thread::sleep_for(chrono::milliseconds(GetUpdateCycle()));	// 거리계산 갱신을 주기적으로 실행
 
 		if (!GetIsStart())	// 주기가 지나기 전에 런닝머신이 종료되면 거리갱신 하지않음
 		{
 			return;
 		}
 
-		Distance += CurrentSpeed * (((double)UpdateCycle/1000) / 3600);   // 속도에 따라 거리갱신
+		Distance += CurrentSpeed * (((double)GetUpdateCycle() / 1000) / 3600);   // 속도에 따라 거리갱신
 		Invoke();		// 거리갱신 됐다고 알림
 	}
 }

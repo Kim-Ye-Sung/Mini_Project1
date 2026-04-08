@@ -12,7 +12,7 @@ using namespace std;
 
 void UserInput::InputLoop()
 {
-	while (!WantExit)
+	while (true)
 	{
 		int key = _getch();
 
@@ -38,7 +38,7 @@ void UserInput::InputLoop()
 			switch (HealthUI_Obj->GetCurrentU_State())
 			{
 			case UI_State::MainUI:	// 현재 화면이 메인메뉴라면 프로그램 종료
-				WantExit = true;	// 프로그램 종료
+				return;
 				break;
 			case UI_State::ResultUI:	// 현재 화면이 결과창이라면 메인메뉴로 바로 이동
 				HealthUI_Obj->GoToMainmenu();
@@ -75,9 +75,6 @@ UserInput::UserInput()
 	CalorieCalculator_Obj->AddFunction(bind(&HealthUI::SetCalorieText, HealthUI_Obj.get(), placeholders::_1));
 	SpeedCalculator_Obj->AddFunction(bind(&DistanceCalculator::SetCurrentSpeed, DistanceCalculator_Obj.get(), placeholders::_1));
 	SpeedCalculator_Obj->AddFunction(bind(&CalorieCalculator::SetCurrentSpeed, CalorieCalculator_Obj.get(), placeholders::_1));
-
-	thread t(&UserInput::InputLoop, this);
-	t.detach();
 }
 
 UserInput::~UserInput() = default;

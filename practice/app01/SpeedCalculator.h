@@ -21,7 +21,7 @@ public:
 
 	void Speed_Down();
 
-	void SetSpeed(double Speed);
+	//void SetSpeed(double Speed);
 
 	std::string ChangeToText(double RunningDistance, double RunningTime);	// 평균속도를 계산하여 결과를 넘겨주기 위한 함수
 

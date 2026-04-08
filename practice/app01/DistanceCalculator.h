@@ -9,8 +9,6 @@ private:
 
 	double CurrentSpeed = 0.0f;
 
-	const int UpdateCycle = 200;		// 거리계산시 갱신 주기. 200 = 0.2초
-
 	std::string ChangeToText() override;
 
 	void StartRunning() override;

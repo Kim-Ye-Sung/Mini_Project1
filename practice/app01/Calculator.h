@@ -11,6 +11,8 @@ private:
 
 	std::vector<std::function<void(std::string)>> listeners;
 
+	const int UpdateCycle = 200;	// 시간, 거리, 칼로리 등등 계산할것들의 계산 주기.    200 = 0.2초
+
 protected:
 	virtual void Invoke();
 
@@ -18,6 +20,8 @@ protected:
 
 	inline bool GetIsStart()  const { return IsStart; }
 
+	inline int GetUpdateCycle() { return UpdateCycle; }
+ 
 public:
 	virtual void StartRunning();
 

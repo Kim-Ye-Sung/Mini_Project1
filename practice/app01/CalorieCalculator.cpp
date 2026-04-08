@@ -38,7 +38,7 @@ void CalorieCalculator::IncreaseCalorie()
 {
 	while (true)
 	{
-		this_thread::sleep_for(chrono::milliseconds(UpdateCycle));
+		this_thread::sleep_for(chrono::milliseconds(GetUpdateCycle()));
 
 		if (!GetIsStart())
 		{
@@ -68,7 +68,7 @@ double CalorieCalculator::KcalCalculate()
 
 	// 칼로리 계산 주기에 따른 실시간 소모량 변환
 	// (kcalPerMin / 60,000ms) * UpdateCycle(ms)
-	double caloriesInInterval = (kcalPerMin / 60000.0f) * (double)UpdateCycle;
+	double caloriesInInterval = (kcalPerMin / 60000.0f) * (double)GetUpdateCycle();
 
 	return caloriesInInterval;
 }

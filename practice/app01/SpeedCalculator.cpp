@@ -62,16 +62,16 @@ void SpeedCalculator::Speed_Down()
 	Invoke();
 }
 
-void SpeedCalculator::SetSpeed(double Speed)
-{
-	if (!GetIsStart())
-	{
-		return;
-	}
-
-	this->Speed = Speed;
-	Invoke();
-}
+//void SpeedCalculator::SetSpeed(double Speed)
+//{
+//	if (!GetIsStart())
+//	{
+//		return;
+//	}
+//
+//	this->Speed = Speed;
+//	Invoke();
+//}
 
 std::string SpeedCalculator::ChangeToText(double RunningDistance, double RunningTime)
 {

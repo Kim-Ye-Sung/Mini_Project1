@@ -15,8 +15,6 @@ private:
 
 	void IncreaseCalorie();
 
-	const int UpdateCycle = 200;  // 칼로리 계산시 갱신 주기. 200 = 0.2초
-
 	double KcalCalculate();
 
 public:
