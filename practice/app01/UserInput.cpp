@@ -5,6 +5,7 @@
 #include "SpeedCalculator.h"
 #include "DistanceCalculator.h"
 #include "CalorieCalculator.h"
+#include "DB_Connector.h"
 #include <conio.h>
 #include <thread>
 
@@ -12,6 +13,10 @@ using namespace std;
 
 void UserInput::InputLoop()
 {
+	int member_id = 0;
+
+	cin >> member_id;
+
 	while (true)
 	{
 		int key = _getch();
@@ -68,6 +73,8 @@ UserInput::UserInput()
 	Calculators.push_back(DistanceCalculator_Obj.get());
 	CalorieCalculator_Obj = make_unique<CalorieCalculator>();
 	Calculators.push_back(CalorieCalculator_Obj.get());
+
+	DB_Connector_Obj = make_unique<DB_Connector>();		// 데이터베이스와 연결되는 객체 생성
 
 	TimeCalculator_Obj->AddFunction(bind(&HealthUI::SetRunTimeText, HealthUI_Obj.get(), placeholders::_1));
 	SpeedCalculator_Obj->AddFunction(bind(&HealthUI::SetSpeedText, HealthUI_Obj.get(), placeholders::_1));

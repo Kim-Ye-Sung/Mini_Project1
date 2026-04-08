@@ -13,6 +13,8 @@ private:
 	std::unique_ptr<class DistanceCalculator> DistanceCalculator_Obj;
 	std::unique_ptr<class CalorieCalculator> CalorieCalculator_Obj;
 
+	std::unique_ptr<class DB_Connector> DB_Connector_Obj;
+
 	std::vector<class Calculator*> Calculators;
 
 	void StartRunning();

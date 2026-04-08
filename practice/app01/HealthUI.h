@@ -6,6 +6,7 @@
 
 enum UI_State
 {
+	InputMemberidUI,
 	MainUI,
 	RunningUI,
 	ResultUI,
@@ -22,9 +23,11 @@ private:
 
 	std::string CalorieText = "   0.0 kcal"; // 런닝머신으로 달리면서 소비한 칼로리를 나타내는 텍스트 변수
 
-	void MoveCursorToTop();
+	void MoveCursorPosition(int x, int y);
 
 	void HideCursor();
+
+	void ShowInputMemberidUI();
 
 	void ShowMaiuMenuUI();
 
@@ -38,7 +41,7 @@ private:
 
 	std::string FormatSpeedText(double Speed);
 
-	UI_State CurrentUI_State = UI_State::MainUI;
+	UI_State CurrentUI_State = UI_State::InputMemberidUI;
 
 public:
 	HealthUI();

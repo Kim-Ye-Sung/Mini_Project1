@@ -9,9 +9,9 @@
 using namespace std;
 
 
-void HealthUI::MoveCursorToTop()
+void HealthUI::MoveCursorPosition(int x, int y)
 {
-    COORD pos = { 0, 0 };
+    COORD pos = { x, y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
@@ -24,11 +24,33 @@ void HealthUI::HideCursor()
     SetConsoleCursorInfo(hConsole, &cursorInfo);
 }
 
+void HealthUI::ShowInputMemberidUI()
+{
+    cout << "┌──────────┬───────────┬──────────────┬─────────────┐" << endl;
+    cout << "│   Time   │   Speed   │   Distance   │   Calorie   │" << endl;
+    cout << "│ " << RunTimeText << " │ " << SpeedText << " │  " << DistanceText << "  │ " << CalorieText << " │" << endl;
+    cout << "├──────────┴───────────┴──────────────┴─────────────┤" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│            ( Enter a 5-digit number )             │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│            Member ID :                            │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "│                                                   │" << endl;
+    cout << "└───────────────────────────────────────────────────┘" << endl;
+
+    MoveCursorPosition(26, 9);
+}
+
 HealthUI::HealthUI()
 {
     HideCursor();       // 시작시 커서를 숨기기.
 
-    ShowMaiuMenuUI();   // 시작시 최초 UI 띄우기.
+    ShowInputMemberidUI();   // 시작시 최초 UI 띄우기.
 }
 
 void HealthUI::SetRunTimeText(double RunTime)
@@ -120,7 +142,7 @@ void HealthUI::GoToMainmenu()
 
 void HealthUI::ShowRunningUI()
 {
-	MoveCursorToTop();
+    MoveCursorPosition(0,0);
 
 	cout << "┌──────────┬───────────┬──────────────┬─────────────┐" << endl;
 	cout << "│   Time   │   Speed   │   Distance   │   Calorie   │" << endl;
@@ -142,7 +164,7 @@ void HealthUI::ShowRunningUI()
 
 void HealthUI::ShowMaiuMenuUI()
 {
-    MoveCursorToTop();
+    MoveCursorPosition(0, 0);
 
     cout << "┌──────────┬───────────┬──────────────┬─────────────┐" << endl;
     cout << "│   Time   │   Speed   │   Distance   │   Calorie   │" << endl;
@@ -164,7 +186,7 @@ void HealthUI::ShowMaiuMenuUI()
 
 void HealthUI::ShowResultUI(std::string T_Text, std::string S_Text, std::string D_Text, std::string C_Text)
 {
-    MoveCursorToTop();
+    MoveCursorPosition(0, 0);
 
     cout << "┌──────────┬───────────┬──────────────┬─────────────┐" << endl;
     cout << "│   Time   │   Speed   │   Distance   │   Calorie   │" << endl;
