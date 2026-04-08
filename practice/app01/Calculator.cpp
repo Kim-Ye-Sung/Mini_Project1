@@ -2,11 +2,11 @@
 
 using namespace std;
 
-void Calculator::Invoke()
+void Calculator::Invoke(double Value)
 {
 	for (auto& func : listeners)
 	{
-		func(ChangeToText());
+		func(Value);
 	}
 }
 
@@ -16,7 +16,7 @@ void Calculator::StartRunning()
 }
 
 
-void Calculator::AddFunction(std::function<void(std::string)> func)
+void Calculator::AddFunction(std::function<void(double)> func)
 {
 	listeners.push_back(func);
 }

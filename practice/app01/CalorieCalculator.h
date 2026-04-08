@@ -9,8 +9,6 @@ private:
 
 	double CurrentSpeed = 0.0f;
 
-	std::string ChangeToText() override;
-
 	void StartRunning() override;
 
 	void IncreaseCalorie();

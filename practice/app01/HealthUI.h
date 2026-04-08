@@ -36,22 +36,24 @@ private:
 
 	void UpdateScreen();
 
+	std::string FormatSpeedText(double Speed);
+
 	UI_State CurrentUI_State = UI_State::MainUI;
 
 public:
 	HealthUI();
 
-	inline void SetRunTimeText(std::string RunTimeText) { this->RunTimeText = RunTimeText; }
+	void SetRunTimeText(double RunTime);
 
-	inline void SetSpeedText(std::string SpeedText) { this->SpeedText = SpeedText; }
+	void SetSpeedText(double Speed);
 
-	inline void SetDistanceText(std::string DistanceText) { this->DistanceText = DistanceText; }
+	void SetDistanceText(double Distance);
 
-	inline void SetCalorieText(std::string CalorieText) { this->CalorieText = CalorieText; }
+	void SetCalorieText(double Calorie);
 
 	void StartRunning();
 
-	void StopRunning(std::string AverageSpeedText);
+	void StopRunning(double AverageSpeed);
 
 	void GoToMainmenu();
 

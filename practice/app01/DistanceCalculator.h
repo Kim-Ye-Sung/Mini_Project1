@@ -9,15 +9,14 @@ private:
 
 	double CurrentSpeed = 0.0f;
 
-	std::string ChangeToText() override;
-
 	void StartRunning() override;
 
 	void IncreaseDistance();
+
+	double DistanceCalculate();
 public:
 
 	inline void SetCurrentSpeed(double Speed) { CurrentSpeed = Speed; }
 
 	inline double GetDistance() const { return Distance; }
-
 };

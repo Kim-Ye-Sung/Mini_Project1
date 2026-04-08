@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <thread>
 #include <chrono>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -29,7 +31,63 @@ HealthUI::HealthUI()
     ShowMaiuMenuUI();   // 시작시 최초 UI 띄우기.
 }
 
-void HealthUI::StopRunning(std::string AverageSpeedText)
+void HealthUI::SetRunTimeText(double RunTime)
+{
+	int hour = (int)RunTime / 3600;          // 시간
+	int min = ((int)RunTime % 3600) / 60;    // 분
+	int sec = (int)RunTime % 60;             // 초
+
+	stringstream TimeText;
+	TimeText << setw(2) << setfill('0') << hour << ":"  // 시간,분,초 단위를 두자리씩 표기하며, 빈자리는 0으로 채워서 나타내기
+		     << setw(2) << setfill('0') << min << ":"
+		     << setw(2) << setfill('0') << sec;
+
+	RunTimeText = TimeText.str();
+}
+
+void HealthUI::SetSpeedText(double Speed)
+{
+    this->SpeedText = FormatSpeedText(Speed);
+}
+
+void HealthUI::SetDistanceText(double Distance)
+{
+	stringstream DistanceText;
+
+	DistanceText << fixed           // 고정 소수점
+		         << setprecision(3) // 소수점 2자리
+		         << setw(7)         // 전체 폭 (000.00  == .을 포함한6자리)
+		         << setfill(' ')    // 빈 자리 0으로 채움
+		         << Distance << " km";
+
+	this->DistanceText = DistanceText.str();
+}
+
+void HealthUI::SetCalorieText(double Calorie)
+{
+	stringstream CalorieText;
+	CalorieText << fixed
+		        << setprecision(1)
+		        << setw(6)
+		        << setfill(' ')
+		        << Calorie << " kcal";
+
+    this->CalorieText = CalorieText.str();
+}
+
+std::string HealthUI::FormatSpeedText(double Speed)
+{
+    stringstream SpeedText;
+    SpeedText << fixed		// 고정 소수점
+                     << setprecision(1)   // 소수점 1자리까지 표기
+                     << setw(4)   // . 까지 포함하여 4자리 나타내기
+                     << setfill(' ')  // 비어있는 곳은 0으로 표기
+                     << Speed << " km/h";
+
+    return SpeedText.str();
+}
+
+void HealthUI::StopRunning(double AverageSpeed)
 {
     if (!IsStart)
     {
@@ -39,6 +97,7 @@ void HealthUI::StopRunning(std::string AverageSpeedText)
     IsStart = false;
 
     string TimeResultText = RunTimeText;
+    string AverageSpeedText = FormatSpeedText(AverageSpeed);
     string DistanceResltText = DistanceText;
     string CalorieResultText = CalorieText;
 

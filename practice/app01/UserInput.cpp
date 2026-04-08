@@ -71,10 +71,10 @@ UserInput::UserInput()
 
 	TimeCalculator_Obj->AddFunction(bind(&HealthUI::SetRunTimeText, HealthUI_Obj.get(), placeholders::_1));
 	SpeedCalculator_Obj->AddFunction(bind(&HealthUI::SetSpeedText, HealthUI_Obj.get(), placeholders::_1));
-	DistanceCalculator_Obj->AddFunction(bind(&HealthUI::SetDistanceText, HealthUI_Obj.get(), placeholders::_1));
-	CalorieCalculator_Obj->AddFunction(bind(&HealthUI::SetCalorieText, HealthUI_Obj.get(), placeholders::_1));
 	SpeedCalculator_Obj->AddFunction(bind(&DistanceCalculator::SetCurrentSpeed, DistanceCalculator_Obj.get(), placeholders::_1));
 	SpeedCalculator_Obj->AddFunction(bind(&CalorieCalculator::SetCurrentSpeed, CalorieCalculator_Obj.get(), placeholders::_1));
+	DistanceCalculator_Obj->AddFunction(bind(&HealthUI::SetDistanceText, HealthUI_Obj.get(), placeholders::_1));
+	CalorieCalculator_Obj->AddFunction(bind(&HealthUI::SetCalorieText, HealthUI_Obj.get(), placeholders::_1));
 }
 
 UserInput::~UserInput() = default;
@@ -96,6 +96,6 @@ void UserInput::StopRunning()
 		Cal->StopRunning();
 	}
 
-	HealthUI_Obj->StopRunning(SpeedCalculator_Obj->ChangeToText(DistanceCalculator_Obj->GetDistance(), TimeCalculator_Obj->GetRunTime()));
+	HealthUI_Obj->StopRunning(SpeedCalculator_Obj->AvrSpeedCalcuate(DistanceCalculator_Obj->GetDistance(), TimeCalculator_Obj->GetRunTime()));
 }
 

@@ -1,21 +1,8 @@
 ﻿#include "SpeedCalculator.h"
 #include <iostream>
-#include <sstream>
-#include <iomanip>
+
 
 using namespace std;
-
-string SpeedCalculator::ChangeToText()
-{
-	stringstream SpeedText;
-	SpeedText << fixed		// 고정 소수점
-			  << setprecision(1)   // 소수점 1자리까지 표기
-			  << setw(4)   // . 까지 포함하여 4자리 나타내기
-			  << setfill(' ')  // 비어있는 곳은 0으로 표기
-			  << Speed << " km/h";
-
-	return SpeedText.str();
-}
 
 void SpeedCalculator::StartRunning()
 {
@@ -27,18 +14,21 @@ void SpeedCalculator::StartRunning()
 	Calculator::StartRunning();
 
 	Speed = InitSpeed;       // 런닝머신을 작동시작시에는 기본적으로 InitialSpeed의 속도로 시작
-	Invoke();
+	Invoke(Speed);
 }
 
-void SpeedCalculator::Invoke()
+double SpeedCalculator::AvrSpeedCalcuate(double RunningDistance, double RunningTime)
 {
-	Calculator::Invoke();
+	AverageSpeed = 0.0f;
 
-	for (auto& func : Speedlisteners)
+	if (RunningTime > 0.0f)
 	{
-		func(Speed);
+		AverageSpeed = RunningDistance / (RunningTime / 3600.0f);
 	}
+
+	return AverageSpeed;
 }
+
 
 void SpeedCalculator::Speed_Up()
 {
@@ -48,7 +38,7 @@ void SpeedCalculator::Speed_Up()
 	}
 
 	Speed += 0.1f;
-	Invoke();
+	Invoke(Speed);
 }
 
 void SpeedCalculator::Speed_Down()
@@ -59,7 +49,7 @@ void SpeedCalculator::Speed_Down()
 	}
 
 	Speed -= 0.1f;
-	Invoke();
+	Invoke(Speed);
 }
 
 //void SpeedCalculator::SetSpeed(double Speed)
@@ -72,27 +62,3 @@ void SpeedCalculator::Speed_Down()
 //	this->Speed = Speed;
 //	Invoke();
 //}
-
-std::string SpeedCalculator::ChangeToText(double RunningDistance, double RunningTime)
-{
-	double AverageSpeed = 0.0f;
-
-	if (RunningTime > 0.0f)
-	{
-		AverageSpeed = RunningDistance / (RunningTime / 3600.0f);
-	}
-
-	stringstream AverageSpeedText;
-	AverageSpeedText << fixed		// 고정 소수점
-					 << setprecision(1)   // 소수점 1자리까지 표기
-					 << setw(4)   // . 까지 포함하여 4자리 나타내기
-					 << setfill(' ')  // 비어있는 곳은 0으로 표기
-					 << AverageSpeed << " km/h";
-
-	return AverageSpeedText.str();
-}
-
-void SpeedCalculator::AddFunction(std::function<void(double)> func)
-{
-	Speedlisteners.push_back(func);
-}

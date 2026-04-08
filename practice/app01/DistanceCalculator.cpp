@@ -1,23 +1,8 @@
 ﻿#include "DistanceCalculator.h"
-#include <sstream>
-#include <iomanip>
 #include <thread>
 #include <chrono>
 
 using namespace std;
-
-string DistanceCalculator::ChangeToText()
-{
-	std::stringstream DistanceText;
-
-	DistanceText << fixed           // 고정 소수점
-				 << setprecision(3) // 소수점 2자리
-				 << setw(7)         // 전체 폭 (000.00  == .을 포함한6자리)
-				 << setfill(' ')    // 빈 자리 0으로 채움
-				 << Distance << " km";
-
-	return DistanceText.str();
-}
 
 void DistanceCalculator::StartRunning()
 {
@@ -45,8 +30,17 @@ void DistanceCalculator::IncreaseDistance()
 			return;
 		}
 
-		Distance += CurrentSpeed * (((double)GetUpdateCycle() / 1000) / 3600);   // 속도에 따라 거리갱신
-		Invoke();		// 거리갱신 됐다고 알림
+		Distance += DistanceCalculate();   // 속도에 따라 거리갱신
+		Invoke(Distance);		// 거리갱신 됐다고 알림
 	}
+}
+
+double DistanceCalculator::DistanceCalculate()
+{	
+	double DistanceInInterval = 0.0f;
+
+	DistanceInInterval = CurrentSpeed * (((double)GetUpdateCycle() / 1000) / 3600);
+
+	return DistanceInInterval;
 }
 

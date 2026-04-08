@@ -1,23 +1,8 @@
 ﻿#include "CalorieCalculator.h"
 #include <thread>
 #include <chrono>
-#include <sstream>
-#include <iomanip>
-
 
 using namespace std;
-
-std::string CalorieCalculator::ChangeToText()
-{	
-	stringstream CalorieText;
-	CalorieText << fixed
-				<< setprecision(1)
-				<< setw(6)
-				<< setfill(' ')
-				<< Calorie << " kcal";
-
-	return CalorieText.str();
-}
 
 void CalorieCalculator::StartRunning()
 {
@@ -46,7 +31,7 @@ void CalorieCalculator::IncreaseCalorie()
 		}
 
 		Calorie += KcalCalculate();
-		Invoke();
+		Invoke(Calorie);
 	}
 }
 
